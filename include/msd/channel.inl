@@ -11,7 +11,9 @@ template <typename T>
 channel<typename std::decay<T>::type>& operator<<(channel<typename std::decay<T>::type>& ch, T&& in)
 {
     if (ch.closed()) {
-        throw closed_channel{"cannot write on closed channel"};
+        // failed silently if channel is closed
+        // since Exceptions are not allowed
+        return ch;
     }
 
     {
